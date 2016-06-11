@@ -10,28 +10,19 @@ public class DragPanel : MonoBehaviour, IPointerDownHandler, IDragHandler  {
 	private Vector2 pointerOffset;
 	private RectTransform canvasRectTransform;
 	private RectTransform panelRectTransform;
+	private RectTransform rootCanvasRectTransform;
 
-	/*
-	void OnGUI() {
-		Canvas bar = GetComponentInChildren<Canvas> ();
-		Canvas dialog = GetComponent<Canvas> ();
-
-		windowRect = GetComponent<RectTransform> ().rect;
-
-		windowRect = GUI.Window(0, windowRect, DoMyWindow, "My Window");
-	}
-
-
-	void DoMyWindow(int windowID) {
-		GUI.DragWindow(new Rect(0, 0, 10000, 20));
-	}
-	*/
 
 	void Awake () {
 		Canvas canvas = GetComponentInParent <Canvas>();
 		if (canvas != null) {
 			canvasRectTransform = canvas.transform as RectTransform;
 			panelRectTransform = transform.parent as RectTransform;
+			rootCanvasRectTransform = transform.parent.transform.parent as RectTransform;
+
+
+			Debug.Log ( "canvas bar " + canvasRectTransform.rect.ToString() );
+			Debug.Log ( "rootCanvas " + rootCanvasRectTransform.rect.ToString() );
 		}
 	}
 
@@ -50,12 +41,16 @@ public class DragPanel : MonoBehaviour, IPointerDownHandler, IDragHandler  {
 
 		Vector2 localPointerPosition;
 		if (RectTransformUtility.ScreenPointToLocalPointInRectangle (
-			canvasRectTransform, pointerPosition, data.pressEventCamera, out localPointerPosition)) {
+			canvasRectTransform, 
+			pointerPosition, 
+			data.pressEventCamera, 
+			out localPointerPosition)  
+
+		) {			
 			panelRectTransform.localPosition = localPointerPosition - pointerOffset;
 		}
+	}		
 
-		Debug.Log ("On drag");
-	}
 
 	Vector2 ClampToWindow (PointerEventData data) {
 		Vector2 rawPointerPosition = data.position;
