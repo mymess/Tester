@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <RootNamespace></RootNamespace>
+    <ProjectGuid>{297A7529-7E1C-81F2-D01D-5BCA2FC1339A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <BaseDirectory>Assets</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_3_4;UNITY_5_3;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_STANDALONE_OSX;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_GAMECENTER;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_LOG_MIXED_STACKTRACE;ENABLE_UNITYWEBREQUEST;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;CROSS_PLATFORM_INPUT</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Temp\bin\Release\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\Plugins\AASharp\AAS2DCoordinate.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AAS3DCoordinate.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASAberration.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASAngularSeparation.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASBinaryStar.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASBinaryStarDetails.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASCalendarDate.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASCoordinateTransformation.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASDate.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASDiameters.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASDynamicalTime.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASEarth.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASEaster.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASEclipses.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASEclipticalElements.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASElementsPlanetaryOrbit.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASElliptical.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASEquationOfTime.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASEquinoxesAndSolstices.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASFK5.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASGalileanMoonDetail.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASGalileanMoons.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASGalileanMoonsDetails.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASGlobe.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASIlluminatedFraction.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASInterpolate.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASJewishCalendar.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASJupiter.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASKepler.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASLunarEclipseDetails.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASMars.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASMath.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASMercury.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASMoon.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASMoonIlluminatedFraction.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASMoonMaxDeclinations.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASMoonNodes.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASMoonPhases.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASNearParabolic.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASNeptune.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASNodes.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASNutation.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASParabolic.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASParallactic.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASParallax.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASPhysicalJupiter.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASPhysicalMars.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASPhysicalMoon.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASPhysicalSun.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASPlanetPerihelionAphelion.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASPlanetaryPhenomena.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASPluto.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASPrecession.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASRefraction.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASRiseTransitSet.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASSaturn.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASSaturnMoons.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASSaturnRings.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASSidereal.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASSolarEclipseDetails.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASStellarMagnitudes.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASSun.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASUranus.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AASVenus.cs" />
+     <Compile Include="Assets\Plugins\AASharp\AberrationCoefficient.cs" />
+     <Compile Include="Assets\Plugins\AASharp\DAY_OF_WEEK.cs" />
+     <Compile Include="Assets\Plugins\AASharp\EventType.cs" />
+     <Compile Include="Assets\Plugins\AASharp\MoonCoefficient1.cs" />
+     <Compile Include="Assets\Plugins\AASharp\MoonCoefficient2.cs" />
+     <Compile Include="Assets\Plugins\AASharp\MoonPerigeeApogeeCoefficient.cs" />
+     <Compile Include="Assets\Plugins\AASharp\PlanetaryObject.cs" />
+     <Compile Include="Assets\Plugins\AASharp\PlutoCoefficient1.cs" />
+     <Compile Include="Assets\Plugins\AASharp\PlutoCoefficient2.cs" />
+     <Compile Include="Assets\Plugins\AASharp\VSOP87Coefficient.cs" />
+     <Compile Include="Assets\Plugins\Utils.cs" />
+     <None Include="Assets\Fonts\LuckiestGuy\LICENSE.txt" />
+ <Reference Include="UnityEngine.Networking">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.UI">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>

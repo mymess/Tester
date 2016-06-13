@@ -11,6 +11,14 @@ public class DateTimeEditor : Editor {
 
 	string playPause;
 
+	int year;
+	int month;
+	int day;
+
+	int hour;
+	int minute;
+	float second;
+
 
 	Texture playTex;
 	Texture pauseTex;
@@ -23,6 +31,7 @@ public class DateTimeEditor : Editor {
 		//playTex = LoadPNG("Icons/play-button");
 		//pauseTex = LoadPNG ("Icons/pause-button");
 
+		dt.Reset ();
 		playTex = Resources.Load ("Textures/play-button") as Texture;
 		pauseTex = Resources.Load ("Textures/pause-button") as Texture;
 		playPauseTex = playTex;
@@ -48,30 +57,64 @@ public class DateTimeEditor : Editor {
 		return tex;
 	}
 
+
+	//Refresh is done here
 	public override void OnInspectorGUI()
 	{
+		GUILayout.Label ("Date/Time", EditorStyles.boldLabel);
 
 		DisplayDateSettings ();
 		DisplayTimeSettings ();
-
+		//
+		if (!dt.playMode){
+			dt.UpdateJd (year, month, day, hour, minute, (double)second);
+		}
+		if (GUILayout.Button ("NOW")) {
+			dt.Reset ();
+		}
 		dt.gregorianCalendar = EditorGUILayout.ToggleLeft ("Use Gregorian calendar", dt.gregorianCalendar, GUILayout.ExpandWidth(true));
 
-		dt.playMode = GUILayout.Toggle (dt.playMode, playPauseTex, "Button");
+		GUILayout.Space (20);
+
+		DisplayPlayMode ();
+
+
+
+	}
+
+	void DisplayPlayMode(){
+		GUILayout.Label ("Play mode", EditorStyles.boldLabel);
+		GUILayout.BeginHorizontal(GUILayout.MaxWidth(500));
+
+
+		GUILayoutOption[] options = new GUILayoutOption[]{ GUILayout.Width(90), GUILayout.Height(40) };
+		dt.playMode = GUILayout.Toggle (dt.playMode, playPauseTex, "Button", options);
 
 		if (dt.playMode) {			
 			playPause = "Pause";
 			playPauseTex = pauseTex;
-			dt.Reset ();
+			dt.Play ();
 			Repaint ();
-
-		} else {						
+		} else {	
+			Repaint ();
 			playPause = "Play";
 			playPauseTex = playTex;
 		}
 
+		var textDimensions = GUI.skin.label.CalcSize(new GUIContent("Time scale: "));
+		EditorGUIUtility.labelWidth = textDimensions.x;
+
+		options = new GUILayoutOption[]{ GUILayout.Width(90) };
+		GUIStyle myStyle = new GUIStyle(GUI.skin.textField);
+		myStyle.alignment = TextAnchor.MiddleRight;
+
+
+		dt.timeScale = EditorGUILayout.IntField ("Time scale: ", dt.timeScale, myStyle, options);
+
+		GUILayout.EndHorizontal();
+
+
 	}
-
-
 
 
 
@@ -97,14 +140,11 @@ public class DateTimeEditor : Editor {
 		GUILayout.BeginVertical();
 		GUILayout.BeginHorizontal(GUILayout.MaxWidth(500));
 
-
 		string hourLabel = "Hour:";
 		string minLabel = "Minute:";
 		string secLabel = "Second:";
 
-
-
-		GUILayoutOption[] options = new GUILayoutOption[]{ GUILayout.Width(80) };
+		GUILayoutOption[] options = new GUILayoutOption[]{ GUILayout.Width(90) };
 
 		GUIStyle myStyle = new GUIStyle(GUI.skin.textField);
 		myStyle.alignment = TextAnchor.MiddleRight;
@@ -113,21 +153,24 @@ public class DateTimeEditor : Editor {
 		var textDimensions = GUI.skin.label.CalcSize(new GUIContent(hourLabel));
 		EditorGUIUtility.labelWidth = textDimensions.x;
 
-		dt.hour  = EditorGUILayout.IntField ( hourLabel, dt.hour, myStyle, options);
+		options = new GUILayoutOption[]{ GUILayout.Width(60) };
+		hour  = EditorGUILayout.IntField ( hourLabel, dt.Hour(), myStyle, options);
 		GUILayout.FlexibleSpace();
 
 		textDimensions = GUI.skin.label.CalcSize(new GUIContent(minLabel));
 		EditorGUIUtility.labelWidth = textDimensions.x;
-
-		dt.minute = EditorGUILayout.IntField ( minLabel, dt.minute, myStyle, options);
+		options = new GUILayoutOption[]{ GUILayout.Width(70) };
+		minute = EditorGUILayout.IntField ( minLabel, dt.Minute(), myStyle, options);
 
 		GUILayout.FlexibleSpace();
 
 		textDimensions = GUI.skin.label.CalcSize(new GUIContent(secLabel));
 		EditorGUIUtility.labelWidth = textDimensions.x;
+		options = new GUILayoutOption[]{ GUILayout.Width(100) };
 
-
-		dt.second = EditorGUILayout.IntField (secLabel, dt.second, myStyle, options);
+		string secondStr = dt.Second ().ToString ("##.###");
+		float.TryParse (secondStr, out second);
+		second = EditorGUILayout.FloatField (secLabel, second, myStyle, options);
 
 		EditorGUILayout.EndHorizontal (  );
 		GUILayout.EndVertical();
@@ -136,7 +179,7 @@ public class DateTimeEditor : Editor {
 
 
 	void DisplayDateSettings(){
-		GUILayout.Label ("Date/Time", EditorStyles.boldLabel);
+		
 
 		GUILayout.BeginVertical();
 		GUILayout.BeginHorizontal(GUILayout.MaxWidth(500));
@@ -157,13 +200,13 @@ public class DateTimeEditor : Editor {
 		var textDimensions = GUI.skin.label.CalcSize(new GUIContent(yearLabel));
 		EditorGUIUtility.labelWidth = textDimensions.x;
 
-		dt.year  = EditorGUILayout.IntField ( yearLabel, dt.year, myStyle, options);
+		year  = EditorGUILayout.IntField ( yearLabel, dt.Year(), myStyle, options);
 		GUILayout.FlexibleSpace();
 
 		textDimensions = GUI.skin.label.CalcSize(new GUIContent(monthLabel));
 		EditorGUIUtility.labelWidth = textDimensions.x;
 
-		dt.month = EditorGUILayout.IntField ( monthLabel, dt.month, myStyle,options);
+		month = EditorGUILayout.IntField ( monthLabel, dt.Month(), myStyle,options);
 
 		GUILayout.FlexibleSpace();
 
@@ -171,12 +214,11 @@ public class DateTimeEditor : Editor {
 		EditorGUIUtility.labelWidth = textDimensions.x;
 
 
-		dt.day   = EditorGUILayout.IntField (dayLabel, dt.day, myStyle,options);
+		day   = EditorGUILayout.IntField (dayLabel, dt.Day(), myStyle,options);
 
 		EditorGUILayout.EndHorizontal (  );
 		GUILayout.EndVertical();
 
-		serializedObject.ApplyModifiedProperties();
 
 	}
 
