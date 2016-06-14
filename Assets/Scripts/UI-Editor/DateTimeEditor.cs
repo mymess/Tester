@@ -10,21 +10,20 @@ public class DateTimeEditor : Editor {
 
 	DateTimeSettings dt;
 
-	int year;
-	int month;
-	int day;
+	private int year;
+	private int month;
+	private int day;
 
-	int hour;
-	int minute;
-	float second;
-
+	private int hour;
+	private int minute;
+	private float second;
 
 	Texture playTex;
 	Texture pauseTex;
 	Texture playPauseTex;
 
 	double lastUpdate;
-
+	private int timeScaleIndex = 0;
 
 	void OnEnable()
 	{
@@ -111,11 +110,24 @@ public class DateTimeEditor : Editor {
 		GUIStyle myStyle = new GUIStyle(GUI.skin.textField);
 		myStyle.alignment = TextAnchor.MiddleRight;
 
+		GUILayout.FlexibleSpace();
 
+		GUILayout.BeginVertical();
 		dt.timeScale = EditorGUILayout.IntField ("Time scale: ", dt.timeScale, myStyle, options);
 
-		GUILayout.EndHorizontal();
 
+		string[] timeScalesArray = new string[]{ "Natural", "one minute per second", "one hour per second", "one day per second",
+			"one month per second", "one year per second"};
+		
+		GUIStyle style    = new GUIStyle ("Popup");
+		style.alignment   = TextAnchor.MiddleRight;
+		style.fontStyle = FontStyle.Bold;
+
+		GUILayoutOption[] dropdownOptions = new GUILayoutOption[]{ GUILayout.MaxWidth(140), GUILayout.MinHeight(20) };
+		timeScaleIndex = EditorGUILayout.Popup(timeScaleIndex, timeScalesArray, style, dropdownOptions);
+
+		GUILayout.EndVertical();
+		GUILayout.EndHorizontal();
 		lastUpdate = EditorApplication.timeSinceStartup;
 	}
 

@@ -45,10 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Accept.cs" />
      <Compile Include="Assets\DialogFader.cs" />
-     <Compile Include="Assets\LatitudeDegValidator.cs" />
-     <Compile Include="Assets\LocationValidators.cs" />
      <Compile Include="Assets\MoonRotator.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyAttack.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyHealth.cs" />

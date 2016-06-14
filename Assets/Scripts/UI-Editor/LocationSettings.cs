@@ -169,7 +169,6 @@ public class LocationSettings : MonoBehaviour {
 
 	private void LoadCities(){
 		TextAsset file = Resources.Load ("World_Cities_Location_table") as TextAsset;
-		string s = file.text;
 
 		if (cities.Count == 0) {
 			using (StringReader reader = new StringReader (file.text)) {
@@ -178,8 +177,7 @@ public class LocationSettings : MonoBehaviour {
 					line = reader.ReadLine ();
 					if (line != null) {
 						string[] data = line.Replace("\"","").Split (';');
-
-						if(!string.IsNullOrEmpty(data[2])){ 			//some city names are empty in the file
+						if(!string.IsNullOrEmpty(data[2])){ 			//some city names are empty in the file, so skip them
 							City city = new City ();
 							city.country = data [1];
 							city.name = data [2];
@@ -192,17 +190,12 @@ public class LocationSettings : MonoBehaviour {
 
 				} while (line != null);
 			}
-
 			cities.Sort ((x, y) => string.Compare (x.name, y.name));
 		}
-		Debug.Log (cities [10].ToString ());
-		Debug.Log (cities.Count);
+
 	}
 
 	public List<City> Search(){
-
-		Debug.Log (searchInput);
-
 		List<City> result = cities.Where(city => city.name.StartsWith(searchInput, 
 			StringComparison.InvariantCultureIgnoreCase) ).ToList();
 
