@@ -2,6 +2,8 @@
 using UnityEditor;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+
 
 [CustomEditor(typeof(LocationSettings))]
 public class LocationEditor : Editor {
@@ -19,6 +21,8 @@ public class LocationEditor : Editor {
 	private int latMinutes;
 	private float latSeconds;
 
+	private int resultIndex = 0;
+
 	void OnEnable()
 	{
 		locSettings = (LocationSettings) target;
@@ -26,6 +30,10 @@ public class LocationEditor : Editor {
 
 	public override void OnInspectorGUI()
 	{
+		DisplayCitySearch ();
+
+		GUILayout.Space (10);
+
 		DisplayLongitudeSettings();
 
 		GUILayout.Space (10);
@@ -35,10 +43,6 @@ public class LocationEditor : Editor {
 		GUILayout.Space (10);
 
 		DisplayAltitudeSettings ();
-
-		GUILayout.Space (10);
-
-		DisplayCitySearch ();
 
 		GUILayout.Space (10);
 
@@ -53,8 +57,36 @@ public class LocationEditor : Editor {
 		int textFieldHeight = 18;
 
 		GUILayoutOption[] textFieldoptions = new GUILayoutOption[]{ GUILayout.MinWidth(textFieldWidth), GUILayout.MinHeight(textFieldHeight) };
-		locSettings.searchInput = EditorGUILayout.TextField ( "", locSettings.searchInput, myStyle, textFieldoptions);
+		locSettings.searchInput = EditorGUILayout.TextField ( "Search: ", locSettings.searchInput, myStyle, textFieldoptions);
 
+		List<LocationSettings.City> searchResults = new List<LocationSettings.City> ();
+
+		if(!string.IsNullOrEmpty(locSettings.searchInput.Trim())){
+			searchResults = locSettings.Search ();
+		}
+			
+		string[] resultsArray = new string[1]{""};
+
+		Debug.Log ("Results: " + searchResults.Count);
+
+
+		if (searchResults.Count > 0) {					
+			resultsArray = new string[searchResults.Count];
+			for (int i = 0; i < searchResults.Count; i++) {
+				resultsArray [i] = searchResults [i].ToString ();
+			}
+		} else {
+			resultIndex = 0;
+		}
+		resultIndex = EditorGUILayout.Popup(resultIndex, resultsArray, textFieldoptions);
+
+		if(searchResults.Count > 0){
+			LocationSettings.City city = searchResults[resultIndex];
+			locSettings.Latitude  = city.latitude;
+			locSettings.Longitude = -city.longitude;
+			locSettings.Altitude  = city.altitude;
+			Repaint ();
+		}
 
 
 	}
@@ -72,7 +104,7 @@ public class LocationEditor : Editor {
 		GUIStyle myStyle = new GUIStyle(GUI.skin.textField);
 		myStyle.alignment = TextAnchor.MiddleRight;
 
-		locSettings.altitude = EditorGUILayout.IntField ( "", locSettings.altitude, myStyle, textFieldoptions);
+		locSettings.Altitude = EditorGUILayout.FloatField ( "", locSettings.Altitude, myStyle, textFieldoptions);
 
 		GUILayout.Label (" meters", GUI.skin.label);
 		EditorGUILayout.EndHorizontal (  );

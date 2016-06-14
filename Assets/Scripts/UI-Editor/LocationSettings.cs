@@ -13,7 +13,24 @@ public class LocationSettings : MonoBehaviour {
 
 
 	private double longitude;
+	public double Longitude {
+		get { return longitude; }
+		set { longitude = value; }
+	}
+
 	private double latitude;
+	public double Latitude {
+		get { return latitude; }
+		set { latitude = value; }
+	}
+
+
+	private float altitude;
+	public float Altitude {
+		get { return altitude; }
+		set { altitude = value; }
+	}
+
 
 	public string searchInput;
 
@@ -23,15 +40,17 @@ public class LocationSettings : MonoBehaviour {
 	private double SECONDS_PER_DEGREE = 3600.0d;
 	private double SECONDS_PER_MINUTE = 60.0d;
 
-	public int altitude;
+
 
 	void Awake(){
 		longitude = 0;
-		latitude = 40.0d;
-		LoadCities ();
-
-
+		latitude = 40.0d;	
 	}
+
+	void OnEnable(){
+		LoadCities ();
+	}
+
 
 	public string NorthOrSouth(){
 		return latitude >= 0.0d ? "N" : "S";
@@ -159,7 +178,8 @@ public class LocationSettings : MonoBehaviour {
 					line = reader.ReadLine ();
 					if (line != null) {
 						string[] data = line.Replace("\"","").Split (';');
-						if(!string.IsNullOrEmpty(data[2])){
+
+						if(!string.IsNullOrEmpty(data[2])){ 			//some city names are empty in the file
 							City city = new City ();
 							city.country = data [1];
 							city.name = data [2];
@@ -175,27 +195,18 @@ public class LocationSettings : MonoBehaviour {
 
 			cities.Sort ((x, y) => string.Compare (x.name, y.name));
 		}
-
+		Debug.Log (cities [10].ToString ());
+		Debug.Log (cities.Count);
 	}
 
-	public string[] Search(){
-		//string pattern = string.Format("^{0}", searchInput)
-		var myRegex=new Regex(@"^."+searchInput+"$");
+	public List<City> Search(){
 
-		//var myRegex=new Regex(@"^.*_Test.txt$");
-		//List<string> resultList=files.Where(f => myRegex.IsMatch(f)).ToList();
-		List<City> results = cities.Where(c => c.name.Contains(searchInput) ).ToList();
+		Debug.Log (searchInput);
 
-		//List<string> results2 = cities.Where(c => c.name.Contains(searchInput) => c.ToString() ).ToList();
-		//string[] resultList = cities.name.Where(myRegex.IsMatch);
+		List<City> result = cities.Where(city => city.name.StartsWith(searchInput, 
+			StringComparison.InvariantCultureIgnoreCase) ).ToList();
 
-		List<string> resultsList = new List<string>();
-
-		foreach (City c in results) {
-			resultsList.Add(c.ToString());
-		}
-
-		return resultsList.ToArray() ;
+		return result;
 	}
 
 
@@ -208,9 +219,18 @@ public class LocationSettings : MonoBehaviour {
 		public double latitude;
 		public float altitude;
 
+
+		public void Log(){
+			Debug.Log (string.Format("{0}, lon: {1}, lat{2}", this.ToString(), longitude, latitude));
+		}
+
 		public override string ToString ()
 		{
 			return String.Format ("{0}, {1}", this.name, this.country);
 		}
 	}
+
+
+
+
 }
