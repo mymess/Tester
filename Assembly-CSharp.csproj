@@ -65,6 +65,9 @@
      <Compile Include="Assets\Scripts\UI-Editor\DateTimeEditor.cs" />
      <Compile Include="Assets\Scripts\UI-Editor\DateTimeSettings.cs" />
      <Compile Include="Assets\Scripts\UI-Editor\DateTimeWindow.cs" />
+     <Compile Include="Assets\Scripts\UI-Editor\LocationEditor.cs" />
+     <Compile Include="Assets\Scripts\UI-Editor\LocationSettings.cs" />
+     <Compile Include="Assets\Scripts\UI-Editor\LocationSettingsTest.cs" />
      <Compile Include="Assets\Scripts\UI-Menu\CloseAction.cs" />
      <Compile Include="Assets\Scripts\UI-Menu\DragAction.cs" />
      <Compile Include="Assets\Scripts\UI-Menu\DragPanel.cs" />

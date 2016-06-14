@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -8,8 +9,6 @@ using System.IO;
 public class DateTimeEditor : Editor {
 
 	DateTimeSettings dt;
-
-	string playPause;
 
 	int year;
 	int month;
@@ -24,6 +23,8 @@ public class DateTimeEditor : Editor {
 	Texture pauseTex;
 	Texture playPauseTex;
 
+	double lastUpdate;
+
 
 	void OnEnable()
 	{
@@ -35,6 +36,7 @@ public class DateTimeEditor : Editor {
 		playTex = Resources.Load ("Textures/play-button") as Texture;
 		pauseTex = Resources.Load ("Textures/pause-button") as Texture;
 		playPauseTex = playTex;
+		lastUpdate = EditorApplication.timeSinceStartup;
 	}
 
 
@@ -78,6 +80,7 @@ public class DateTimeEditor : Editor {
 
 		DisplayPlayMode ();
 
+		GUILayout.Space (20);
 
 
 	}
@@ -90,21 +93,21 @@ public class DateTimeEditor : Editor {
 		GUILayoutOption[] options = new GUILayoutOption[]{ GUILayout.Width(90), GUILayout.Height(40) };
 		dt.playMode = GUILayout.Toggle (dt.playMode, playPauseTex, "Button", options);
 
-		if (dt.playMode) {			
-			playPause = "Pause";
+		if (dt.playMode) {						
 			playPauseTex = pauseTex;
-			dt.Play ();
+			decimal deltaTime = Convert.ToDecimal (EditorApplication.timeSinceStartup - lastUpdate);
+			dt.Play ( deltaTime );
+
 			Repaint ();
 		} else {	
 			Repaint ();
-			playPause = "Play";
 			playPauseTex = playTex;
 		}
 
 		var textDimensions = GUI.skin.label.CalcSize(new GUIContent("Time scale: "));
 		EditorGUIUtility.labelWidth = textDimensions.x;
 
-		options = new GUILayoutOption[]{ GUILayout.Width(90) };
+		options = new GUILayoutOption[]{ GUILayout.Width(140) };
 		GUIStyle myStyle = new GUIStyle(GUI.skin.textField);
 		myStyle.alignment = TextAnchor.MiddleRight;
 
@@ -113,27 +116,11 @@ public class DateTimeEditor : Editor {
 
 		GUILayout.EndHorizontal();
 
-
+		lastUpdate = EditorApplication.timeSinceStartup;
 	}
 
 
 
-	void DisplayLocationSettings(){
-
-		GUILayout.Label ("Location", EditorStyles.boldLabel);
-
-		GUILayout.BeginVertical();
-		GUILayout.BeginHorizontal(GUILayout.MaxWidth(500));
-		GUIStyle myStyle = new GUIStyle(GUI.skin.textField);
-		myStyle.alignment = TextAnchor.MiddleRight;
-
-		GUILayout.Label ("Longitude");
-
-		GUILayout.EndHorizontal();
-		GUILayout.EndVertical();
-
-
-	}
 
 
 	void DisplayTimeSettings(){
@@ -179,17 +166,12 @@ public class DateTimeEditor : Editor {
 
 
 	void DisplayDateSettings(){
-		
-
 		GUILayout.BeginVertical();
 		GUILayout.BeginHorizontal(GUILayout.MaxWidth(500));
 
-
-		string yearLabel = "Year:";
+		string yearLabel  = "Year:";
 		string monthLabel = "Month:";
-		string dayLabel = "Day:";
-
-
+		string dayLabel   = "Day:";
 
 		GUILayoutOption[] options = new GUILayoutOption[]{ GUILayout.Width(80) };
 
@@ -214,12 +196,10 @@ public class DateTimeEditor : Editor {
 		EditorGUIUtility.labelWidth = textDimensions.x;
 
 
-		day   = EditorGUILayout.IntField (dayLabel, dt.Day(), myStyle,options);
+		day = EditorGUILayout.IntField (dayLabel, dt.Day(), myStyle,options);
 
 		EditorGUILayout.EndHorizontal (  );
 		GUILayout.EndVertical();
-
-
 	}
 
 }

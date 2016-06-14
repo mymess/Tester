@@ -2,24 +2,12 @@
 using System.Collections;
 using System;
 using AASharp;
-using UnityEditor;
+
 
 [ExecuteInEditMode]
 public class DateTimeSettings : MonoBehaviour
 {
 	private decimal jd;
-
-	//private double JD;
-
-	/*
-	public int year;
-	public int month;
-	public int day;
-
-	public int hour;
-	public int minute;
-	public float second;
-	*/
 
 	private double HOURS_PER_DAY = 24d;
 	private double MINUTES_PER_DAY = 1440d;
@@ -31,7 +19,7 @@ public class DateTimeSettings : MonoBehaviour
 	public bool playMode;
 	public int timeScale;
 
-	private double lastUpdate; //EditorApplication.timeSinceStartup ;
+
 
 	public DateTime localDatetime;
 
@@ -39,28 +27,14 @@ public class DateTimeSettings : MonoBehaviour
 		Reset ();
 		gregorianCalendar = true;
 		playMode = false;
-		timeScale = 1;
-		lastUpdate = EditorApplication.timeSinceStartup;
+		timeScale = 1;	
+	}		
 
-	}
-
-
-	void Update(){
-		/*
-		if (playMode)
-			Play ();
-		*/
-	}
-
-	public void Play(){
-		
-		decimal delta = Convert.ToDecimal (EditorApplication.timeSinceStartup - lastUpdate);
+	public void Play(decimal deltaTime){
 		decimal scale = Convert.ToDecimal (timeScale);
 		decimal secondsPerDay = 86400m;
 
-		jd =  Decimal.Add(jd, delta * scale / secondsPerDay); 
-
-		lastUpdate = EditorApplication.timeSinceStartup;			
+		jd =  Decimal.Add(jd, deltaTime * scale / secondsPerDay); 
 	}
 
 
@@ -71,9 +45,7 @@ public class DateTimeSettings : MonoBehaviour
 		double dayDec = dt.Day + dt.Hour / HOURS_PER_DAY + dt.Minute / MINUTES_PER_DAY +
 						dt.Second / SECONDS_PER_DAY + dt.Millisecond / MILLISECONDS_PER_DAY;
 		
-		jd = Convert.ToDecimal(AASDate.DateToJD (dt.Year, dt.Month, dayDec, gregorianCalendar));
-
-		//Debug.Log ("DayDec-> " + dayDec);
+		jd = Convert.ToDecimal(AASDate.DateToJD (dt.Year, dt.Month, dayDec, gregorianCalendar));			
 	}
 
 
