@@ -91,13 +91,12 @@ public class LocationEditor : Editor {
 			resultIndex = 0;
 		}
 
-		GUILayoutOption[] dropdownOptions = new GUILayoutOption[]{ GUILayout.MinWidth(240), GUILayout.MinHeight(textFieldHeight) };
+		GUILayoutOption[] dropdownOptions = new GUILayoutOption[]{ GUILayout.MinWidth(260), GUILayout.MinHeight(textFieldHeight), GUILayout.ExpandWidth(true)  };
 		GUIStyle style    = new GUIStyle ("Popup");
 		style.alignment   = TextAnchor.MiddleRight;
-
 		style.fontStyle = FontStyle.Bold;
 
-		GUISkin skin = new GUISkin ();
+
 		GUILayout.BeginHorizontal();
 		GUILayout.FlexibleSpace();
 		resultIndex = EditorGUILayout.Popup(resultIndex, resultsArray, style, dropdownOptions);
@@ -110,8 +109,6 @@ public class LocationEditor : Editor {
 			locSettings.Altitude  = city.altitude;
 			Repaint ();
 		}
-
-
 	}
 
 
@@ -150,16 +147,14 @@ public class LocationEditor : Editor {
 		shiftStyle.fontStyle = FontStyle.Bold;
 		EditorGUIUtility.labelWidth = 0;
 
-		int textFieldWidth = 30;
+		int textFieldWidth  = 30;
 		int textFieldHeight = 18;
 		GUILayoutOption[] textFieldoptions = new GUILayoutOption[]{ GUILayout.MinWidth(textFieldWidth), GUILayout.MinHeight(textFieldHeight) };
-		
 
 		GUI.SetNextControlName(LATITUDE_DEGREES);
 		latDegrees = EditorGUILayout.IntField ( "", locSettings.LatitudeDegrees(), myStyle, textFieldoptions);
 
 		GUILayout.Label ("º", shiftStyle);
-
 
 		//NORTH-SOUTH button
 		options = new GUILayoutOption[]{ GUILayout.Width(50), GUILayout.Height(20) };

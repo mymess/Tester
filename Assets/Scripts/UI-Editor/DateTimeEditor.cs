@@ -23,25 +23,20 @@ public class DateTimeEditor : Editor {
 	Texture playPauseTex;
 
 	double lastUpdate;
+
+	private static string TIME_SCALE = "TimeScale";
 	private int timeScaleIndex = 0;
 
 	void OnEnable()
 	{
 		dt = (DateTimeSettings)target;
-		//playTex = LoadPNG("Icons/play-button");
-		//pauseTex = LoadPNG ("Icons/pause-button");
-
 		dt.Reset ();
 		playTex = Resources.Load ("Textures/play-button") as Texture;
 		pauseTex = Resources.Load ("Textures/pause-button") as Texture;
 		playPauseTex = playTex;
 		lastUpdate = EditorApplication.timeSinceStartup;
 	}
-
-
-	void OnGUI(){
-		//playMode = GUILayout.Button (playPause);
-	}
+		
 
 	private Texture2D LoadPNG(string filePath) {
 
@@ -66,30 +61,49 @@ public class DateTimeEditor : Editor {
 
 		DisplayDateSettings ();
 		DisplayTimeSettings ();
-		//
+
+		DisplayTimeOptions ();
+
+		GUILayout.Space (5);
+
+		DisplayPlayMode ();
+
+		GUILayout.Space (20);
+	}
+
+	void DisplayTimeOptions(){
 		if (!dt.playMode){
 			dt.UpdateJd (year, month, day, hour, minute, (double)second);
 		}
 		if (GUILayout.Button ("NOW")) {
 			dt.Reset ();
 		}
-		dt.gregorianCalendar = EditorGUILayout.ToggleLeft ("Use Gregorian calendar", dt.gregorianCalendar, GUILayout.ExpandWidth(true));
+		GUILayout.Space (5);
+		EditorGUILayout.BeginHorizontal ();
+		GUILayoutOption[] options = new GUILayoutOption[]{ GUILayout.Width(65), GUILayout.Height(40) };
+		GUIStyle style = new GUIStyle ();
 
-		GUILayout.Space (20);
+		bool pressed = GUILayout.Button (dt.UtcOrLocal(), "Button", options);
 
-		DisplayPlayMode ();
+		if (pressed) {
+			dt.ToggleUtcLocalTime ();
 
-		GUILayout.Space (20);
+			Repaint ();
+		}
 
+		GUILayout.Space (30);
+		dt.gregorianCalendar = EditorGUILayout.ToggleLeft ("Gregorian calendar", dt.gregorianCalendar, GUILayout.ExpandWidth(true));
+		EditorGUILayout.EndHorizontal ();
 
 	}
+
 
 	void DisplayPlayMode(){
 		GUILayout.Label ("Play mode", EditorStyles.boldLabel);
 		GUILayout.BeginHorizontal(GUILayout.MaxWidth(500));
 
 
-		GUILayoutOption[] options = new GUILayoutOption[]{ GUILayout.Width(90), GUILayout.Height(40) };
+		GUILayoutOption[] options = new GUILayoutOption[]{ GUILayout.Width(65), GUILayout.Height(40) };
 		dt.playMode = GUILayout.Toggle (dt.playMode, playPauseTex, "Button", options);
 
 		if (dt.playMode) {						
@@ -103,31 +117,45 @@ public class DateTimeEditor : Editor {
 			playPauseTex = playTex;
 		}
 
-		var textDimensions = GUI.skin.label.CalcSize(new GUIContent("Time scale: "));
+
+		string intFieldlabel = "Time scale (seconds/s): ";
+		var textDimensions = GUI.skin.label.CalcSize(new GUIContent(intFieldlabel));
 		EditorGUIUtility.labelWidth = textDimensions.x;
 
-		options = new GUILayoutOption[]{ GUILayout.Width(140) };
-		GUIStyle myStyle = new GUIStyle(GUI.skin.textField);
+		options			  = new GUILayoutOption[]{ GUILayout.MinWidth(190), GUILayout.ExpandWidth(true) };
+		GUIStyle myStyle  = new GUIStyle(GUI.skin.textField);
 		myStyle.alignment = TextAnchor.MiddleRight;
+		myStyle.fixedWidth = 60;
 
-		GUILayout.FlexibleSpace();
+		myStyle.stretchWidth = true;
+		//GUILayout.FlexibleSpace();
 
 		GUILayout.BeginVertical();
-		dt.timeScale = EditorGUILayout.IntField ("Time scale: ", dt.timeScale, myStyle, options);
 
+		//Time scale text field
+		EditorGUI.BeginDisabledGroup(dt.IsAnyTimeScaleOptionSelected()); //<---
+			GUI.SetNextControlName(TIME_SCALE);
 
-		string[] timeScalesArray = new string[]{ "Natural", "one minute per second", "one hour per second", "one day per second",
-			"one month per second", "one year per second"};
-		
+		dt.timeScale = EditorGUILayout.IntField (intFieldlabel, dt.timeScale, myStyle,  options);
+
+		EditorGUI.EndDisabledGroup(); 
+
+		//Time scale dropdown
 		GUIStyle style    = new GUIStyle ("Popup");
 		style.alignment   = TextAnchor.MiddleRight;
-		style.fontStyle = FontStyle.Bold;
+		style.fontStyle   = FontStyle.Bold;
+		style.stretchWidth=true;
+		GUILayoutOption[] dropdownOptions = new GUILayoutOption[]{ GUILayout.MinWidth(190), GUILayout.MinHeight(20), GUILayout.ExpandWidth(true) };
+		timeScaleIndex = EditorGUILayout.Popup(timeScaleIndex, DateTimeSettings.TimeScaleOption.GetLabels(), style, dropdownOptions);
+		dt.SelectTimeScaleOption (timeScaleIndex);
 
-		GUILayoutOption[] dropdownOptions = new GUILayoutOption[]{ GUILayout.MaxWidth(140), GUILayout.MinHeight(20) };
-		timeScaleIndex = EditorGUILayout.Popup(timeScaleIndex, timeScalesArray, style, dropdownOptions);
+		Repaint ();
+
 
 		GUILayout.EndVertical();
 		GUILayout.EndHorizontal();
+
+		//needed for play mode
 		lastUpdate = EditorApplication.timeSinceStartup;
 	}
 

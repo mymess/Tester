@@ -151,8 +151,7 @@ public class LocationSettings : MonoBehaviour {
 		return lon;
 	}
 
-	private double MapToMinus90To90Range(double lat){
-		int sign = lat < 0 ? -1 : 1;
+	private double MapToMinus90To90Range(double lat){		
 		int n = 0;
 		while ((n + 1) * 90 < lat) {
 			lat -= 2 * (n+1) * (lat-90);
